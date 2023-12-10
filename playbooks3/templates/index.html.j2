@@ -1,0 +1,18 @@
+<html>
+  <head>
+  <title>Welcome to ansible Again</title>
+</head>
+<body>
+<h1>nginx, configured by Ansible, version 2</h1>
+<p>If you can see this, Ansible successfully installed nginx.</p>
+<p> Control machine: {{ template_host }}</p>
+<p> Current host: {{ ansible_hostname }}</p>
+<p>
+<ul>
+{% for host in groups['all'] %}
+<li> {{ host }} - {{ hostvars[host]['ansible_ssh_host']}}</li>
+{% endfor %}
+</ul>
+</p>
+</body>
+</html>

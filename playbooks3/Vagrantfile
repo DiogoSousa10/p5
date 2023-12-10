@@ -1,0 +1,42 @@
+Vagrant.configure("2") do |config|
+  
+    config.vm.define "host1" do |host1|
+      host1.vm.box = "ubuntu/focal64"
+  
+      host1.vm.network "forwarded_port", guest: 80, host: 8080
+      host1.vm.network "forwarded_port", guest: 443, host: 8443
+      host1.vm.network "private_network", ip: "192.168.56.10"
+  
+      host1.vm.hostname = "host1"
+    end
+  
+    config.vm.define "host2" do |host2|
+      host2.vm.box = "ubuntu/focal64"
+  
+      host2.vm.network "forwarded_port", guest: 80, host: 8081
+      host2.vm.network "forwarded_port", guest: 443, host: 8444
+      host2.vm.network "private_network", ip: "192.168.56.11"
+  
+      host2.vm.hostname = "host2"
+
+    end
+
+    config.vm.define "ansible" do |ansible|
+      ansible.vm.box = "ubuntu/focal64"
+  
+      ansible.vm.network "forwarded_port", guest: 80, host: 8082
+      ansible.vm.network "forwarded_port", guest: 443, host: 8445
+      ansible.vm.network "private_network", ip: "192.168.56.12"
+  
+      ansible.vm.hostname = "ansible"
+
+      # Enable provisioning with a shell script. Additional provisioners such as
+      # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
+      # documentation for more information about their specific syntax and use.
+      ansible.vm.provision "shell", inline: <<-SHELL
+        sudo apt-get update
+        sudo apt-get install -y ansible
+      SHELL
+    end    
+end
+  
